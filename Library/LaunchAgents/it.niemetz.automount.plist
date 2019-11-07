@@ -2,29 +2,22 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Label</key>
-	<string>it.niemetz.automount</string>
-	<key>LimitLoadToSessionType</key>
-	<string>Aqua</string>
-	<key>RunAtLoad</key>
-	<true/>
-	<!-- no longer implemented as stated in man page
-	<key>KeepAlive</key>
-	<dict>
-		<key>NetworkState</key>
-		<true/>
-	</dict>
-	-->
-	<key>WatchPaths</key>
-	<array>
-		<string>/etc/resolv.conf</string>
-		<string>/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist</string>
-		<string>/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist</string>
-	</array>
-	<key>ProgramArguments</key>
-	<array>
-		<string>/usr/local/bin/automount.sh</string>
-		<string>--mountall</string>
-	</array>
+    <key>Label</key>
+    <string>it.niemetz.automount</string>
+    <key>LimitLoadToSessionType</key>
+    <string>Aqua</string>
+    <key>ThrottleInterval</key>
+    <integer>1</integer>
+    <key>WatchPaths</key>
+    <array>
+        <string>/etc/resolv.conf</string>
+        <string>/Library/Preferences/SystemConfiguration/NetworkInterfaces.plist</string>
+        <string>/Library/Preferences/SystemConfiguration/com.apple.airport.preferences.plist</string>
+    </array>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/automount.sh</string>
+        <string>--mountall</string>
+    </array>
 </dict>
 </plist>
