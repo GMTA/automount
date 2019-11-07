@@ -162,28 +162,16 @@ declare -ir USERID="$(readDS --account="${USERNAME}" --key="UniqueID")"
 declare -ir USERPRIMARYGROUPID="$(readDS --account="${USERNAME}" --key="PrimaryGroupID")"
 # user home
 declare -r USERHOME="$(readDS --account="${USERNAME}" --key="NFSHomeDirectory")"
-# login name
-LOGINNAME="$(id -p | awk -F'	' '/^login/ { print $2 }')"
-if [ -z "${LOGINNAME}" ]; then
-	LOGINNAME="${USERNAME}"
-	# login id
-	declare -i LOGINID="${USERID}"
-	# login primary group id
-	declare -i LOGINPRIMARYGROUPID=${USERPRIMARYGROUPID}
-	# login home
-	LOGINHOME="${USERHOME}"
-	# launch as user
-	LAUNCHASUSER=""
-else
-	declare -i LOGINID="$(readDS --account="${LOGINNAME}" --key="UniqueID")"
-	declare -i LOGINPRIMARYGROUPID="$(readDS --account="${LOGINNAME}" --key="PrimaryGroupID")"
-	LOGINHOME="$(readDS --account="${LOGINNAME}" --key="NFSHomeDirectory")"
-	if [[ ${OSVERSION_INTEGER} -ge 101000 ]]; then
-		LAUNCHASUSER="launchctl asuser ${LOGINID} chroot -u ${LOGINID} -g ${LOGINPRIMARYGROUPID} /"
-	elif [[ ${OSVERSION_INTEGER} -le 100900 ]]; then
-		LAUNCHASUSER="launchctl bsexec ${LOGINID} chroot -u ${LOGINID} -g ${LOGINPRIMARYGROUPID} /"
-	fi
-fi
+LOGINNAME="${USERNAME}"
+# login id
+declare -i LOGINID="${USERID}"
+# login primary group id
+declare -i LOGINPRIMARYGROUPID=${USERPRIMARYGROUPID}
+# login home
+LOGINHOME="${USERHOME}"
+# launch as user
+LAUNCHASUSER=""
+
 declare -r LOGINNAME LOGINID LOGINPRIMARYGROUPID LOGINHOME LAUNCHASUSER
 # case $(ps -o state= -p ${$}) in
 if [ -t 0 ]; then
@@ -584,7 +572,6 @@ function processMountlist {
 
 	# check all files exits
 	if [ ! -s "${AUTOMOUNTPLIST_AFN}" ] || [ ! -s "${LOGINKEYCHAIN_AFN}" ]; then
-	# if [[ ! ( -s "${AUTOMOUNTPLIST_AFN}" && ( -s "${LOGINKEYCHAIN_AFN}" || -s "${LOGINKEYCHAIN_AFN}-db" ) ) ]]; then
 		log --priority=${LOG_ERROR} "${AUTOMOUNTPLIST_AFN} and/or ${LOGINKEYCHAIN_AFN} are missing"
 		return ${ERROR}
 	fi
